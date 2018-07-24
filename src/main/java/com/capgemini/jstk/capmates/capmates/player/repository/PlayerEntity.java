@@ -1,23 +1,14 @@
-package com.capgemini.jstk.capmates.capmates.user.repository;
+package com.capgemini.jstk.capmates.capmates.player.repository;
 
-import com.capgemini.jstk.capmates.capmates.game.repository.Game;
-
-import java.util.List;
-import java.util.Set;
-
-public class User {
+public class PlayerEntity {
 
     private int id;
     private String firstName;
     private String lastName;
     private String email;
-    private StringBuffer password;
+   // private StringBuffer password;
+    private String password;
     private String motto;
-    private Set<Game> games;
-
-    public User() {
-    }
-
 
     public int getId() {
         return id;
@@ -51,11 +42,11 @@ public class User {
         this.email = email;
     }
 
-    public StringBuffer getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(StringBuffer password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -67,11 +58,4 @@ public class User {
         this.motto = motto;
     }
 
-    public Set<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(Set<Game> games) {
-        this.games = games;
-    }
 }

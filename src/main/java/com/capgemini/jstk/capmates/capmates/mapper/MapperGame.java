@@ -1,15 +1,17 @@
 package com.capgemini.jstk.capmates.capmates.mapper;
 
-import com.capgemini.jstk.capmates.capmates.game.repository.Game;
+import com.capgemini.jstk.capmates.capmates.game.repository.GameEntity;
 import com.capgemini.jstk.capmates.capmates.game.service.GameDTO;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class MapperGame implements MapperObject<Game, GameDTO> {
+@Component
+public class MapperGame implements MapperObject<GameEntity, GameDTO> {
 
     @Override
-    public GameDTO mapFromDAO(Game object){
+    public GameDTO mapFromDAO(GameEntity object){
 
         GameDTO gameDTO = new GameDTO();
 
@@ -22,9 +24,9 @@ public class MapperGame implements MapperObject<Game, GameDTO> {
     }
 
     @Override
-    public Game mapfromDTO(GameDTO object){
+    public GameEntity mapfromDTO(GameDTO object){
 
-        Game game = new Game();
+        GameEntity game = new GameEntity();
 
         game.setId(object.getId());
         game.setName(object.getName());
@@ -33,10 +35,10 @@ public class MapperGame implements MapperObject<Game, GameDTO> {
         return game;
     }
 
-    public Set<GameDTO> mapfromSetDAO(Set<Game> listObject){
+    public Set<GameDTO> mapfromSetDAO(Set<GameEntity> listObject){
 
         Set<GameDTO> games = new HashSet<>();
-        for(Game game : listObject){
+        for(GameEntity game : listObject){
             games.add(mapFromDAO(game));
         }
 

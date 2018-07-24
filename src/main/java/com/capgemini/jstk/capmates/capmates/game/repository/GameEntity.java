@@ -1,6 +1,6 @@
 package com.capgemini.jstk.capmates.capmates.game.repository;
 
-public class Game {
+public class GameEntity {
 
     private int id;
     private String name;

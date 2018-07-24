@@ -1,6 +1,6 @@
 package com.capgemini.jstk.capmates.capmates.game.service;
 
-import com.capgemini.jstk.capmates.capmates.game.repository.Game;
+import com.capgemini.jstk.capmates.capmates.game.repository.GameEntity;
 import com.capgemini.jstk.capmates.capmates.game.repository.GameDAO;
 import com.capgemini.jstk.capmates.capmates.mapper.MapperGame;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,23 +21,23 @@ public class ManageGameCollection {
 
      public GameDTO getGameInformation(int id){
 
-        Game user = dao.getGame(id);
+        GameEntity user = dao.getGame(id);
 
         return mapperGame.mapFromDAO(user);
     }
 
-    public Game saveGameInformation(GameDTO gameDTO){
+    public GameEntity saveGameInformation(GameDTO gameDTO){
 
         return mapperGame.mapfromDTO(gameDTO);
     }
 
     public void addGame(GameDTO gameDTO){
-        Game game = saveGameInformation(gameDTO);
+        GameEntity game = saveGameInformation(gameDTO);
         dao.add(game);
     }
 
     public void remove(int id){
-    //remove from list id games from user
+    //remove from list id games from player
 //        GameDTO gameToRemove = new GameDTO();
 //        Set<GameDTO> games = mapperGame.mapfromSetDAO(dao.getGames());
 //

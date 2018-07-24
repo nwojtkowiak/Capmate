@@ -1,21 +1,25 @@
-package com.capgemini.jstk.capmates.capmates.user.service;
+package com.capgemini.jstk.capmates.capmates.player.service;
 
-import com.capgemini.jstk.capmates.capmates.game.service.GameDTO;
+import com.capgemini.jstk.capmates.capmates.enums.Level;
 
-import java.util.Set;
-
-public class UserDTO {
+public class PlayerDTO {
 
     private int id;
     private String firstName;
     private String lastName;
     private String email;
-    private StringBuffer password;
+    private String password;
     private String motto;
+    private Level level;
 
-    //zmapowac liste ids na liste obiektow ??
-    private Set<GameDTO> games;
 
+    public PlayerDTO(){
+        this.firstName = "";
+        this.lastName = "";
+        this.password ="";
+        this.motto = "";
+        this.level = Level.BEGINNER;
+    }
 
     public int getId() { return id; }
 
@@ -43,11 +47,11 @@ public class UserDTO {
         this.email = email;
     }
 
-    public StringBuffer getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(StringBuffer password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -59,11 +63,8 @@ public class UserDTO {
         this.motto = motto;
     }
 
-    public Set<GameDTO> getGames() {
-        return games;
-    }
+    public Level getLevel() { return this.level; }
 
-    public void setGames(Set<GameDTO> games) {
-        this.games = games;
-    }
+    public void setLevel(Level level) { this.level = level; }
+
 }

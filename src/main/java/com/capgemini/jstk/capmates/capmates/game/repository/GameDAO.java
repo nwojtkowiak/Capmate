@@ -11,14 +11,14 @@ import java.util.stream.Collectors;
 @Repository
 public class GameDAO {
 
-    Map<Integer,Game> listOfGames;
+    Map<Integer,GameEntity> listOfGames;
 
-    public Set<Game> getGames(){
+    public Set<GameEntity> getGames(){
         return listOfGames.values().stream().collect(Collectors.toSet());
     }
 
-    public Set<Game> getGames(List<Integer> idOfGames){
-        Set<Game> games = new HashSet<>();
+    public Set<GameEntity> getGames(List<Integer> idOfGames){
+        Set<GameEntity> games = new HashSet<>();
 
         for(int id : idOfGames){
             games.add(listOfGames.get(id));
@@ -27,11 +27,11 @@ public class GameDAO {
         return games;
     }
 
-    public Game getGame(int id){
+    public GameEntity getGame(int id){
         return listOfGames.get(id);
     }
 
-    public void add(Game game){
+    public void add(GameEntity game){
         listOfGames.put(game.getId(), game);
     }
 }
