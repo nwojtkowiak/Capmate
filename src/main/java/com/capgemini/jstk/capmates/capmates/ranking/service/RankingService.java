@@ -5,7 +5,6 @@ import com.capgemini.jstk.capmates.capmates.game.service.GameService;
 import com.capgemini.jstk.capmates.capmates.mapper.MapperRanking;
 import com.capgemini.jstk.capmates.capmates.ranking.repository.RankingDAO;
 import com.capgemini.jstk.capmates.capmates.ranking.repository.RankingEntity;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

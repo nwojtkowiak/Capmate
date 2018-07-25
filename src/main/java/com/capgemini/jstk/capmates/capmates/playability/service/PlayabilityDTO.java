@@ -1,10 +1,10 @@
-package com.capgemini.jstk.capmates.capmates.playability.repository;
+package com.capgemini.jstk.capmates.capmates.playability.service;
 
 import com.capgemini.jstk.capmates.capmates.enums.Days;
+
 import java.time.LocalTime;
 
-public class PlayabilityEntity {
-
+public class PlayabilityDTO {
     private int id;
     private int playerId;
     private LocalTime from;
