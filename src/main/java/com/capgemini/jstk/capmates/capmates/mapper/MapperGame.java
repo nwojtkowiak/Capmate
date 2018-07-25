@@ -11,34 +11,38 @@ import java.util.Set;
 public class MapperGame implements MapperObject<GameEntity, GameDTO> {
 
     @Override
-    public GameDTO mapFromDAO(GameEntity object){
+    public GameDTO mapFromDAO(GameEntity object) {
+        if (object != null) {
+            GameDTO gameDTO = new GameDTO();
 
-        GameDTO gameDTO = new GameDTO();
+            gameDTO.setId(object.getId());
+            gameDTO.setName(object.getName());
+            gameDTO.setIsNeedMore(object.isNeedMore());
 
-        gameDTO.setId(object.getId());
-        gameDTO.setName(object.getName());
-        gameDTO.setIsNeedMore(object.isNeedMore() );
-
-        return gameDTO;
-
+            return gameDTO;
+        }
+        throw new NullPointerException();
     }
 
     @Override
-    public GameEntity mapfromDTO(GameDTO object){
+    public GameEntity mapfromDTO(GameDTO object) {
 
-        GameEntity game = new GameEntity();
+        if (object != null) {
+            GameEntity game = new GameEntity();
 
-        game.setId(object.getId());
-        game.setName(object.getName());
-        game.setIsNeedMore(object.getIsNeedMore());
+            game.setId(object.getId());
+            game.setName(object.getName());
+            game.setIsNeedMore(object.getIsNeedMore());
 
-        return game;
+            return game;
+        }
+        throw new NullPointerException();
     }
 
-    public Set<GameDTO> mapfromSetDAO(Set<GameEntity> listObject){
+    public Set<GameDTO> mapfromSetDAO(Set<GameEntity> listObject) {
 
         Set<GameDTO> games = new HashSet<>();
-        for(GameEntity game : listObject){
+        for (GameEntity game : listObject) {
             games.add(mapFromDAO(game));
         }
 

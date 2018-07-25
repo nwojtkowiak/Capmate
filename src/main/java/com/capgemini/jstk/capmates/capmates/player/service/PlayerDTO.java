@@ -1,6 +1,10 @@
 package com.capgemini.jstk.capmates.capmates.player.service;
 
 import com.capgemini.jstk.capmates.capmates.enums.Level;
+import com.capgemini.jstk.capmates.capmates.game.service.GameDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerDTO {
 
@@ -11,6 +15,7 @@ public class PlayerDTO {
     private String password;
     private String motto;
     private Level level;
+    private List<GameDTO> games;
 
 
     public PlayerDTO(){
@@ -19,6 +24,7 @@ public class PlayerDTO {
         this.password ="";
         this.motto = "";
         this.level = Level.BEGINNER;
+        this.games = new ArrayList<>();
     }
 
     public int getId() { return id; }
@@ -67,4 +73,7 @@ public class PlayerDTO {
 
     public void setLevel(Level level) { this.level = level; }
 
+    public List<GameDTO> getGames() { return games; }
+
+    public void setGames(List<GameDTO> games) {this.games = games; }
 }

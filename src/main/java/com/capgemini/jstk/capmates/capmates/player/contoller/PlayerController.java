@@ -3,8 +3,8 @@ package com.capgemini.jstk.capmates.capmates.player.contoller;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.capgemini.jstk.capmates.capmates.exception.PlayerNotExist;
-import com.capgemini.jstk.capmates.capmates.player.service.PlayerService;
 import com.capgemini.jstk.capmates.capmates.player.service.PlayerDTO;
+import com.capgemini.jstk.capmates.capmates.player.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,13 +41,14 @@ public class PlayerController {
 
 //TODO change this
     @RequestMapping(value = "/{id}/{firstName}", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
-    public PlayerDTO changeFirstName(@PathVariable(value = "id") int id,@PathVariable(value = "firstName") String firstName) {
+    public PlayerDTO changeFirstName(@PathVariable(value = "id") int id, @PathVariable(value = "firstName") String firstName) {
 
         PlayerDTO playerDTO;
 
         try {
             playerDTO = managePlayerProfile.getPlayerInformation(id);
-            return managePlayerProfile.changeFirstName(playerDTO, firstName);
+            playerDTO.setFirstName(firstName);
+            return managePlayerProfile.savePlayerInformation(playerDTO);
 
         }catch (PlayerNotExist e){
             System.out.println(e.getMessage());

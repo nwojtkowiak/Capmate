@@ -10,7 +10,7 @@ public class MapperPlayer implements MapperObject<PlayerEntity, PlayerDTO> {
     @Override
     public PlayerDTO mapFromDAO(PlayerEntity object) {
 
-        if(object != null) {
+        if (object != null) {
             PlayerDTO playerDTO = new PlayerDTO();
 
             playerDTO.setFirstName(object.getFirstName());
@@ -28,16 +28,18 @@ public class MapperPlayer implements MapperObject<PlayerEntity, PlayerDTO> {
 
     @Override
     public PlayerEntity mapfromDTO(PlayerDTO object) {
+        if (object != null) {
+            PlayerEntity player = new PlayerEntity();
 
-        PlayerEntity player = new PlayerEntity();
+            player.setFirstName(object.getFirstName());
+            player.setLastName(object.getLastName());
+            player.setPassword(object.getPassword());
+            player.setEmail(object.getEmail());
+            player.setMotto(object.getMotto());
+            player.setId(object.getId());
 
-        player.setFirstName(object.getFirstName());
-        player.setLastName(object.getLastName());
-        player.setPassword(object.getPassword());
-        player.setEmail(object.getEmail());
-        player.setMotto(object.getMotto());
-        player.setId(object.getId());
-
-        return player;
+            return player;
+        }
+        throw new NullPointerException();
     }
 }

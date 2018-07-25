@@ -2,27 +2,46 @@ package com.capgemini.jstk.capmates.capmates.player.service;
 
 import com.capgemini.jstk.capmates.capmates.enums.Level;
 import com.capgemini.jstk.capmates.capmates.exception.PlayerNotExist;
+import com.capgemini.jstk.capmates.capmates.game.repository.GameEntity;
+import com.capgemini.jstk.capmates.capmates.game.repository.PlayerGameDAO;
+import com.capgemini.jstk.capmates.capmates.game.service.GameDTO;
+import com.capgemini.jstk.capmates.capmates.mapper.MapperGame;
 import com.capgemini.jstk.capmates.capmates.mapper.MapperPlayer;
+import com.capgemini.jstk.capmates.capmates.mapper.MapperRanking;
 import com.capgemini.jstk.capmates.capmates.player.repository.PlayerEntity;
 import com.capgemini.jstk.capmates.capmates.player.repository.PlayerDAO;
+import com.capgemini.jstk.capmates.capmates.ranking.repository.RankingDAO;
+import com.capgemini.jstk.capmates.capmates.ranking.repository.RankingEntity;
+import com.capgemini.jstk.capmates.capmates.ranking.service.RankingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PlayerService {
 
     private MapperPlayer mapperUser;
-    private PlayerDAO dao;
+    private MapperGame mapperGame;
+    private MapperRanking mapperRanking;
+    private PlayerDAO playerDAO;
+    private PlayerGameDAO playerGameDAO;
+    private RankingDAO rankingDAO;
 
     @Autowired
-    public PlayerService(MapperPlayer mapperUser, PlayerDAO dao){
+    public PlayerService(MapperPlayer mapperUser, MapperGame mapperGame,MapperRanking mapperRanking,
+                         PlayerDAO playerDAO, PlayerGameDAO playerGameDAO, RankingDAO rankingDAO){
         this.mapperUser = mapperUser;
-        this.dao = dao;
+        this.playerDAO = playerDAO;
+        this.mapperRanking = mapperRanking;
+        this.playerGameDAO = playerGameDAO;
+        this.mapperGame = mapperGame;
+        this.rankingDAO = rankingDAO;
     }
 
     public PlayerDTO getPlayerInformation(int id) throws PlayerNotExist {
         try {
-            PlayerEntity user = dao.getUserById(id);
+            PlayerEntity user = playerDAO.getUserById(id);
             return mapperUser.mapFromDAO(user);
         }catch(NullPointerException e){
             throw new PlayerNotExist();
@@ -30,13 +49,14 @@ public class PlayerService {
 
     }
 
-    public void savePlayerInformation(PlayerDTO playerDTO){
-         dao.updateUser(mapperUser.mapfromDTO(playerDTO));
+    public PlayerDTO savePlayerInformation(PlayerDTO playerDTO){
+         playerDAO.updateUser(mapperUser.mapfromDTO(playerDTO));
+         return playerDTO;
     }
 
 //    public void addPlayer(PlayerDTO playerDTO){
 //        PlayerEntity player = savePlayerInformation(playerDTO);
-//        dao.updateUser(player);
+//        playerDAO.updateUser(player);
 //    }
 
     public PlayerDTO addPlayer(String email){
@@ -45,51 +65,20 @@ public class PlayerService {
         playerDTO.setEmail(email);
 
         //nie jest wielowatkowe
-        int id = dao.getNumberOfAllPlayers();
+        int id = playerDAO.getNumberOfAllPlayers();
         playerDTO.setId(id);
 
         PlayerEntity player = mapperUser.mapfromDTO(playerDTO);
-        dao.updateUser(player);
+        playerDAO.updateUser(player);
 
-
-        return  playerDTO;
-    }
-
-    public PlayerDTO changeFirstName(PlayerDTO playerDTO, String firstName){
-
-        playerDTO.setFirstName(firstName);
-        savePlayerInformation(playerDTO);
 
         return playerDTO;
     }
 
-    public PlayerDTO changeLastName(PlayerDTO playerDTO, String lasttName){
-
-        playerDTO.setLastName(lasttName);
-        savePlayerInformation(playerDTO);
-
-        return playerDTO;
-    }
-
-    public PlayerDTO changeEmail(PlayerDTO playerDTO, String email){
-
-        playerDTO.setEmail(email);
-        savePlayerInformation(playerDTO);
-
-        return playerDTO;
-    }
-
-    public PlayerDTO changeMotto(PlayerDTO playerDTO, String motto){
-
-        playerDTO.setMotto(motto);
-        savePlayerInformation(playerDTO);
-
-        return playerDTO;
-    }
 
     public PlayerDTO changePassword(PlayerDTO playerDTO, String oldPassword, String newPassword){
 
-        PlayerDTO testPlayerDto = mapperUser.mapFromDAO(dao.getUserById(playerDTO.getId()));
+        PlayerDTO testPlayerDto = mapperUser.mapFromDAO(playerDAO.getUserById(playerDTO.getId()));
 
         if(testPlayerDto.getPassword().equals(oldPassword)) {
             testPlayerDto.setPassword(newPassword);
@@ -99,11 +88,27 @@ public class PlayerService {
         return testPlayerDto;
     }
 
-   /* public void addGame(PlayerDTO playerDTO, GameDTO gameDTO){
-        Set<GameDTO> games = playerDTO.getGames();
-        games.add(gameDTO);
 
-    }*/
+    public int addGame(PlayerDTO playerDTO, GameDTO gameDTO){
+        //add game to player
+        playerDTO.getGames().add(gameDTO);
+        PlayerEntity rankingEntity = mapperUser.mapfromDTO(playerDTO);
+        playerDAO.updateUser(rankingEntity);
+
+        //add game to playersGames and games
+        GameEntity gameEntity = mapperGame.mapfromDTO(gameDTO);
+        return playerGameDAO.addGame(gameEntity, playerDTO.getId());
+
+
+    }
+
+    public void removeGame(PlayerDTO playerDTO, GameDTO gameDTO){
+        playerDTO.getGames().remove(gameDTO);
+        PlayerEntity rankingEntity = mapperUser.mapfromDTO(playerDTO);
+        playerDAO.updateUser(rankingEntity);
+    }
+
+
 
 
 

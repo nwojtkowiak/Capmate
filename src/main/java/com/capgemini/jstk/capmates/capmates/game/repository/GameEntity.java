@@ -5,6 +5,7 @@ public class GameEntity {
     private int id;
     private String name;
     private boolean isNeedMore;
+    private int numberOfPlayers;
 
 
     public int getId() {
@@ -30,4 +31,8 @@ public class GameEntity {
     public void setIsNeedMore(boolean needMore) {
         isNeedMore = needMore;
     }
+
+    public int getNumberOfPlayers() { return numberOfPlayers; }
+
+    public void setNumberOfPlayers(int numberOfPlayers) { this.numberOfPlayers = numberOfPlayers; }
 }
