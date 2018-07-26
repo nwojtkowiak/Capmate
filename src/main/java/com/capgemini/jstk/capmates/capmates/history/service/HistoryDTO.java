@@ -2,6 +2,7 @@ package com.capgemini.jstk.capmates.capmates.history.service;
 
 import com.capgemini.jstk.capmates.capmates.enums.ResultGame;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class HistoryDTO {
@@ -9,7 +10,7 @@ public class HistoryDTO {
     private int playerId;
     private int gameId;
     private ResultGame resultGame;
-    private Date date;
+    private LocalDate date;
 
     public int getId() {
         return id;
@@ -43,11 +44,11 @@ public class HistoryDTO {
         this.resultGame = resultGame;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }

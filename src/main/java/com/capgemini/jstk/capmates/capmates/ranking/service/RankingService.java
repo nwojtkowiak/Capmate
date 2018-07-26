@@ -81,5 +81,9 @@ public class RankingService {
 
     }
 
+    private void updatePointsForGame(int playerId, int gameId, long newPoints){
+        rankingDAO.updatePointsPlayerForGame(playerId, gameId, newPoints);
+    }
+
 
 }

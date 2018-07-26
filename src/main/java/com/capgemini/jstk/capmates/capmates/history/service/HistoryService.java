@@ -6,6 +6,7 @@ import com.capgemini.jstk.capmates.capmates.history.repository.HistoryEntity;
 import com.capgemini.jstk.capmates.capmates.mapper.MapperHistory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,11 +29,11 @@ public class HistoryService {
         return mapperHistory.mapfromListDAO(historyEntities);
     }
 
-    public List<HistoryDTO> getPlayedGamesForPlayerWithDate(int playerId, Date date){
+    public List<HistoryDTO> getPlayedGamesForPlayerWithDate(int playerId, LocalDate date){
         List<HistoryEntity> historyEntities = historyDAO.getPlayedGamesForPlayerWithDate(playerId, date);
         return mapperHistory.mapfromListDAO(historyEntities);
     }
-    public List<HistoryDTO> getPlayedGamesForPlayerBetweemDates(int playerId, Date dateFrom, Date dateTo){
+    public List<HistoryDTO> getPlayedGamesForPlayerBetweemDates(int playerId, LocalDate dateFrom, LocalDate dateTo){
         List<HistoryEntity> historyEntities = historyDAO.getPlayedGamesForPlayerBetweemDates(playerId, dateFrom, dateTo);
         return mapperHistory.mapfromListDAO(historyEntities);
     }

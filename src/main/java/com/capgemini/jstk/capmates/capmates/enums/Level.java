@@ -1,28 +1,28 @@
 package com.capgemini.jstk.capmates.capmates.enums;
 
 public enum Level {
-    BEGINNER(1,0), INTERMEDIATE(2,500), ADVANCED(3,1000);
+    ADVANCED(3,1000), INTERMEDIATE(2,500),BEGINNER(1,0) ;
 
-    private final int value;
-    private final int pointsRequired;
+    private final int number;
+    private final long pointsRequired;
 
-    Level(int value, int pointsRequired) {
-        this.value = value;
+    Level(int number, long pointsRequired) {
+        this.number = number;
         this.pointsRequired = pointsRequired;
     }
 
-    public int getValue() {
-        return value;
+    public int getNumber() {
+        return number;
     }
 
-    public int getPointsRequired() {
+    public long getPointsRequired() {
         return pointsRequired;
     }
 
-    public static Level getLevelByValue(int value) {
+    public static Level getLevelByPoints(long points) {
         for(Level level : Level.values())
         {
-            if(level.getValue() == value) {
+            if(points >= level.getPointsRequired()) {
                 return level;
             }
         }

@@ -13,6 +13,7 @@ import com.capgemini.jstk.capmates.capmates.player.repository.PlayerDAO;
 import com.capgemini.jstk.capmates.capmates.player.service.PlayerDTO;
 import com.capgemini.jstk.capmates.capmates.player.service.PlayerService;
 import com.capgemini.jstk.capmates.capmates.ranking.repository.RankingDAO;
+import com.capgemini.jstk.capmates.capmates.ranking.service.RankingService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,15 +31,13 @@ public class PlayerServiceTest {
         playerDAO.initListOfUsers(5);
         GameDAO gameDAO = new GameDAO();
         PlayerGameDAO playerGameDAO = new PlayerGameDAO(gameDAO);
-        RankingDAO rankingDAO = new RankingDAO();
+
 
         MapperPlayer mapperPlayer = new MapperPlayer();
         MapperGame mapperGame = new MapperGame();
-        MapperRanking mapperRanking = new MapperRanking();
 
-        playerService = new PlayerService(mapperPlayer, mapperGame, mapperRanking, playerDAO, playerGameDAO, rankingDAO);
+        playerService = new PlayerService(mapperPlayer, mapperGame, playerDAO, playerGameDAO);
         gameService = new GameService(mapperGame, gameDAO);
-
     }
 
     @Test
@@ -172,7 +171,7 @@ public class PlayerServiceTest {
 
 
         //when
-        int idGame = playerService.addGame(playerDTO,gameDTO);
+        playerService.addGame(playerDTO,gameDTO);
 
         //then
         int sizeGamesOfPlayer = playerDTO.getGames().size();
@@ -197,7 +196,7 @@ public class PlayerServiceTest {
         gameDTO.setNumberOfPlayers(2,6);
         //czy game dla playera potrzebuje id?
 
-        int idGame = playerService.addGame(playerDTO,gameDTO);
+        playerService.addGame(playerDTO,gameDTO);
 
         //when
         playerService.removeGame(playerDTO, gameDTO);
@@ -221,6 +220,30 @@ public class PlayerServiceTest {
 
         int sizeGamesOfPlayer = playerDTO.getGames().size();
         assertThat(sizeGamesOfPlayer).isEqualTo(0);
+    }
+
+    @Test
+    public void shouldReturnBeginnerLevel(){
+        //given
+        long points = 10;
+
+        //when
+        Level level = playerService.countLevel(points);
+
+        //then
+        assertThat(level).isEqualTo(Level.BEGINNER);
+    }
+
+    @Test
+    public void shouldReturnIntermediateLevel(){
+        //given
+        long points = 500;
+
+        //when
+        Level level = playerService.countLevel(points);
+
+        //then
+        assertThat(level).isEqualTo(Level.INTERMEDIATE);
     }
 
 

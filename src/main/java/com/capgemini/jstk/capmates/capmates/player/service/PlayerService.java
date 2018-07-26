@@ -23,20 +23,20 @@ public class PlayerService {
 
     private MapperPlayer mapperUser;
     private MapperGame mapperGame;
-    private MapperRanking mapperRanking;
+   // private MapperRanking mapperRanking;
     private PlayerDAO playerDAO;
     private PlayerGameDAO playerGameDAO;
-    private RankingDAO rankingDAO;
+  //  private RankingDAO rankingDAO;
 
     @Autowired
-    public PlayerService(MapperPlayer mapperUser, MapperGame mapperGame,MapperRanking mapperRanking,
-                         PlayerDAO playerDAO, PlayerGameDAO playerGameDAO, RankingDAO rankingDAO){
+    public PlayerService(MapperPlayer mapperUser, MapperGame mapperGame,
+                         PlayerDAO playerDAO, PlayerGameDAO playerGameDAO){
         this.mapperUser = mapperUser;
         this.playerDAO = playerDAO;
-        this.mapperRanking = mapperRanking;
+     //   this.mapperRanking = mapperRanking;
         this.playerGameDAO = playerGameDAO;
         this.mapperGame = mapperGame;
-        this.rankingDAO = rankingDAO;
+     //   this.rankingDAO = rankingDAO;
     }
 
     public PlayerDTO getPlayerInformation(int id) throws PlayerNotExist {
@@ -106,6 +106,11 @@ public class PlayerService {
         playerDTO.getGames().remove(gameDTO);
         PlayerEntity rankingEntity = mapperUser.mapfromDTO(playerDTO);
         playerDAO.updateUser(rankingEntity);
+    }
+
+
+    public Level countLevel(long points){
+        return Level.getLevelByPoints(points);
     }
 
 

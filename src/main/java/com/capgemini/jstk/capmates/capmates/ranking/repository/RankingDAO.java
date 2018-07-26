@@ -64,5 +64,15 @@ public class RankingDAO {
         }
     }
 
+    public void updatePointsPlayerForGame(int playerId, int gameId, long points){
+
+        RankingEntity rankingEntity;
+        rankingEntity = listOfRanking.stream().filter(p -> p.getGameId() == gameId && p.getPlayerId() == playerId).findFirst().get();
+        int indexOfEntity = listOfRanking.indexOf(rankingEntity);
+        long newPoints = rankingEntity.getPoints() + points;
+        listOfRanking.get(indexOfEntity).setPoints(newPoints);
+
+    }
+
 
 }

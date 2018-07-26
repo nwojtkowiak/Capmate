@@ -5,7 +5,6 @@ public class RankingDTO {
 
     private int gameId;
     private int playerId;
-    private int position;
     private long points;
 
 

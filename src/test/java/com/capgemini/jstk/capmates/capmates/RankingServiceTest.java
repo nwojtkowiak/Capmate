@@ -17,12 +17,14 @@ public class RankingServiceTest {
 
     @Before
     public void setUp(){
+        int numOfRows = 5;
         MapperRanking mapperRanking = new MapperRanking();
         MapperGame mapperGame = new MapperGame();
         GameDAO gameDAO = new GameDAO();
+        gameDAO.initListOfGames(numOfRows);
         RankingDAO rankingDAO = new RankingDAO();
         GameService gameService = new GameService(mapperGame,gameDAO);
-        int numOfRows = 5;
+
         rankingDAO.init(numOfRows);
         rankingService = new RankingService(mapperRanking,rankingDAO,gameService);
     }
