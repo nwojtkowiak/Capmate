@@ -44,7 +44,7 @@ public class RankingService {
             int playerId = dto.getPlayerId();
             try {
                 playerService.getPlayerInformation(playerId);
-                addPointsForPlayer(playerId, dto.getGameId(), dto.getPoints());
+                updatePointsForGame(playerId, dto.getGameId(), dto.getPoints());
 
             } catch (PlayerNotExist playerNotExist) {
                 rankingDAO.addNewRanking(mapperRanking.mapfromDTO(dto));
@@ -52,10 +52,11 @@ public class RankingService {
         }
     }
 
-    public void addPointsForPlayer(int playerId, int gameId, long points) {
-        rankingDAO.addPointsForPlayer(playerId, gameId, points);
-    }
-
+    /**
+     * This method return descending sort by points list with position dor players
+     * @param gameId - id game for which positions are count
+     * @return list of points with position as RankingPointsDTO
+     */
     public List<RankingPointsDTO> getRankingWithFillPositions(int gameId) {
         List<RankingPointsDTO> ranking = getRankingWithEmptyPositions(gameId);
         sortForGameByPoints(ranking);
@@ -63,6 +64,11 @@ public class RankingService {
         return ranking;
     }
 
+    /**
+     * This method get list of points without position and not sorted
+     * @param gameId
+     * @return
+     */
     private List<RankingPointsDTO> getRankingWithEmptyPositions(int gameId) {
         List<RankingPointsDTO> ranking = new ArrayList<>();
 
@@ -79,21 +85,30 @@ public class RankingService {
         return ranking;
     }
 
+    /**
+     * This method sort list by points in descending order
+     * @param ranking - list of information about points as RankingPointsDTO
+     */
     private void sortForGameByPoints(List<RankingPointsDTO> ranking) {
         Collections.sort(ranking, Comparator.comparing(RankingPointsDTO::getPoints).reversed());
     }
 
-    private void countPositions(List<RankingPointsDTO> points) {
+    /**
+     * This method count position for everyone player.
+     * If players have the same amount of points that they have the same position
+     * @param listOfPoints
+     */
+    private void countPositions(List<RankingPointsDTO> listOfPoints) {
 
         RankingPointsDTO tmpPoints;
-        points.get(0).setPosition(1);
+        listOfPoints.get(0).setPosition(1);
 
-        for (int i = 1; i < points.size(); i++) {
-            tmpPoints = points.get(i - 1);
-            if (points.get(i).getPoints() == tmpPoints.getPoints()) {
-                points.get(i).setPosition(tmpPoints.getPosition());
+        for (int i = 1; i < listOfPoints.size(); i++) {
+            tmpPoints = listOfPoints.get(i - 1);
+            if (listOfPoints.get(i).getPoints() == tmpPoints.getPoints()) {
+                listOfPoints.get(i).setPosition(tmpPoints.getPosition());
             } else {
-                points.get(i).setPosition(tmpPoints.getPosition() + 1);
+                listOfPoints.get(i).setPosition(tmpPoints.getPosition() + 1);
             }
         }
 

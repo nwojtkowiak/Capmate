@@ -34,13 +34,14 @@ public class PlayerDAO {
         listOfPlayers.put(player.getId(), player);
     }
 
-//    public int getNumberOfAllPlayers() {
-//        return listOfPlayers.size();
-//    }
 
-    public void initListOfUsers(int numberOfUsers) {
+    /**
+     * This method help to create testing date
+     * @param numberOfPlayers - number of rows new data
+     */
+    public void initListOfUsers(int numberOfPlayers) {
 
-        for (int i = 0; i < numberOfUsers; i++) {
+        for (int i = 0; i < numberOfPlayers; i++) {
             PlayerEntity player = new PlayerEntity();
             player.setEmail("player" + i + "@cap.com");
             player.setFirstName("First " + i);

@@ -34,7 +34,7 @@ public class PlayerServiceTest {
         MapperGame mapperGame = new MapperGame();
 
         playerService = new PlayerService(mapperPlayer, mapperGame, playerDAO, playerGameDAO);
-        gameService = new GameService(mapperGame, gameDAO);
+        gameService = new GameService(mapperGame, gameDAO, playerGameDAO);
     }
 
     @Test
@@ -47,11 +47,11 @@ public class PlayerServiceTest {
         //when
         playerDTO.setFirstName(newFirstName);
         playerService.savePlayerInformation(playerDTO);
-
         PlayerDTO testPlayerDTO = playerService.getPlayerInformation(0);
-        String firstName = testPlayerDTO.getFirstName();
+
 
         //then
+        String firstName = testPlayerDTO.getFirstName();
         assertThat(firstName).isEqualTo(newFirstName);
 
     }
@@ -62,14 +62,15 @@ public class PlayerServiceTest {
         //give
         PlayerDTO playerDTO = playerService.getPlayerInformation(0);
         String newLastName = "Kowalska";
+
         //when
         playerDTO.setLastName(newLastName);
         playerService.savePlayerInformation(playerDTO);
-
         PlayerDTO testPlayerDTO = playerService.getPlayerInformation(0);
-        String result = testPlayerDTO.getLastName();
+
 
         //then
+        String result = testPlayerDTO.getLastName();
         assertThat(result).isEqualTo(newLastName);
 
     }
@@ -80,14 +81,15 @@ public class PlayerServiceTest {
         //give
         PlayerDTO playerDTO = playerService.getPlayerInformation(0);
         String newEmail = "test@cap.com";
+
         //when
         playerDTO.setEmail(newEmail);
         playerService.savePlayerInformation(playerDTO);
-
         PlayerDTO testPlayerDTO = playerService.getPlayerInformation(0);
-        String result = testPlayerDTO.getEmail();
+
 
         //then
+        String result = testPlayerDTO.getEmail();
         assertThat(result).isEqualTo(newEmail);
 
     }
@@ -99,14 +101,15 @@ public class PlayerServiceTest {
         PlayerDTO playerDTO = playerService.getPlayerInformation(0);
         String newPasword = "qwerty";
         String oldPassword = playerDTO.getPassword();
+
         //when
         playerDTO.setPassword(newPasword);
         playerService.changePassword(playerDTO, oldPassword, newPasword);
-
         PlayerDTO testPlayerDTO = playerService.getPlayerInformation(0);
-        String result = testPlayerDTO.getPassword();
+
 
         //then
+        String result = testPlayerDTO.getPassword();
         assertThat(result).isEqualTo(newPasword);
 
     }
@@ -118,15 +121,15 @@ public class PlayerServiceTest {
         //give
         PlayerDTO playerDTO = playerService.getPlayerInformation(0);
         String newMotto = "qwerty";
+
         //when
         playerDTO.setMotto(newMotto);
-        //playerService.savePlayerInformation(playerDTO);
         playerService.savePlayerInformation(playerDTO);
-
         PlayerDTO testPlayerDTO = playerService.getPlayerInformation(0);
-        String result = testPlayerDTO.getMotto();
+
 
         //then
+        String result = testPlayerDTO.getMotto();
         assertThat(result).isEqualTo(newMotto);
 
     }
@@ -135,18 +138,18 @@ public class PlayerServiceTest {
     @Test
     public void schouldGetInfoAboutUser() throws PlayerNotExist {
 
-        //give
+        //when
         PlayerDTO playerDTO = playerService.getPlayerInformation(1);
 
-        //when
-       String firstName = playerDTO.getFirstName();
-       String lastName = playerDTO.getLastName();
-       String email = playerDTO.getEmail();
-       String password = playerDTO.getPassword();
-       String motto = playerDTO.getMotto();
-       Level level = playerDTO.getLevel();
 
         //then
+        String firstName = playerDTO.getFirstName();
+        String lastName = playerDTO.getLastName();
+        String email = playerDTO.getEmail();
+        String password = playerDTO.getPassword();
+        String motto = playerDTO.getMotto();
+        Level level = playerDTO.getLevel();
+
         assertThat(firstName).isEqualTo("First 1");
         assertThat(lastName).isEqualTo("Last 1");
         assertThat(email).isEqualTo("player1@cap.com");
@@ -160,15 +163,14 @@ public class PlayerServiceTest {
     public void schouldReturnSize1AfterAddNewGame() throws PlayerNotExist {
         //give
         PlayerDTO playerDTO = playerService.getPlayerInformation(0);
-//TODO czy game dla playera potrzebuje id?
+
         GameDTO gameDTO = new GameDTO();
         gameDTO.setName("Wysokie napiecie");
         gameDTO.setIsNeedMore(false);
-        gameDTO.setNumberOfPlayers(2,6);
-
+        gameDTO.setNumberOfPlayers(2, 6);
 
         //when
-        playerService.addGame(playerDTO,gameDTO);
+        playerService.addGame(playerDTO, gameDTO);
 
         //then
         int sizeGamesOfPlayer = playerDTO.getGames().size();
@@ -178,26 +180,22 @@ public class PlayerServiceTest {
         assertThat(sizeAllGames).isEqualTo(1);
         assertThat(name).isEqualTo("Wysokie napiecie");
 
-        //TODO przetestowac czy zgadzaja sie id w tabelach
-        //List<Integer>  = gameService.
     }
 
     @Test
     public void shouldReturnSize0AfterRemoveGame() throws PlayerNotExist {
         //give
         PlayerDTO playerDTO = playerService.getPlayerInformation(0);
-
         GameDTO gameDTO = new GameDTO();
         gameDTO.setName("Wysokie napiecie");
         gameDTO.setIsNeedMore(false);
-        gameDTO.setNumberOfPlayers(2,6);
-        //czy game dla playera potrzebuje id?
-
-        playerService.addGame(playerDTO,gameDTO);
+        gameDTO.setNumberOfPlayers(2, 6);
+        playerService.addGame(playerDTO, gameDTO);
 
         //when
         playerService.removeGame(playerDTO, gameDTO);
 
+        //then
         int sizeGamesOfPlayer = playerDTO.getGames().size();
         assertThat(sizeGamesOfPlayer).isEqualTo(0);
     }
@@ -206,21 +204,21 @@ public class PlayerServiceTest {
     public void shouldReturnSize0AfterRemoveGameFromEmptyList() throws PlayerNotExist {
         //give
         PlayerDTO playerDTO = playerService.getPlayerInformation(0);
-
         GameDTO gameDTO = new GameDTO();
         gameDTO.setName("Wysokie napiecie");
         gameDTO.setIsNeedMore(false);
-        gameDTO.setNumberOfPlayers(2,6);
+        gameDTO.setNumberOfPlayers(2, 6);
 
         //when
         playerService.removeGame(playerDTO, gameDTO);
 
+        //then
         int sizeGamesOfPlayer = playerDTO.getGames().size();
         assertThat(sizeGamesOfPlayer).isEqualTo(0);
     }
 
     @Test
-    public void shouldReturnBeginnerLevel(){
+    public void shouldReturnBeginnerLevel() {
         //given
         long points = 10;
 
@@ -232,7 +230,7 @@ public class PlayerServiceTest {
     }
 
     @Test
-    public void shouldReturnIntermediateLevel(){
+    public void shouldReturnIntermediateLevel() {
         //given
         long points = 500;
 
@@ -243,5 +241,13 @@ public class PlayerServiceTest {
         assertThat(level).isEqualTo(Level.INTERMEDIATE);
     }
 
+    @Test(expected = PlayerNotExist.class)
+    public void shouldThrowPlayerNotExist() throws PlayerNotExist {
+        //give
+        int idPlayer = 6;
+
+        //when
+        PlayerDTO playerDTO = playerService.getPlayerInformation (idPlayer);
+    }
 
 }

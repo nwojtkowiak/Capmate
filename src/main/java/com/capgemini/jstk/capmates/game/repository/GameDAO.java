@@ -1,6 +1,7 @@
 package com.capgemini.jstk.capmates.game.repository;
 
 import org.springframework.stereotype.Repository;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -23,6 +24,10 @@ public class GameDAO {
         return listOfGames.get(id);
     }
 
+    /**
+     * This class add new game to lisOFGames if it doesn't exist
+     * @param game
+     */
     public void add(GameEntity game) {
         long countGame = listOfGames.values().stream().filter(p -> p.getName().equals(game.getName())).count();
         if (countGame == 0) {
@@ -30,6 +35,10 @@ public class GameDAO {
         }
     }
 
+    /**
+     * This methos is helpful to init data to test
+     * @param numberOfGames - number of rows new data
+     */
     public void initListOfGames(int numberOfGames) {
         for (int i = 0; i < numberOfGames; i++) {
             GameEntity game = new GameEntity();

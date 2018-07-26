@@ -3,6 +3,7 @@ package com.capgemini.jstk.capmates.mapper;
 import com.capgemini.jstk.capmates.history.repository.HistoryEntity;
 import com.capgemini.jstk.capmates.history.service.HistoryDTO;
 import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 

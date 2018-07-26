@@ -21,6 +21,11 @@ public class PlayerGameDAO {
         this.gameDao = gameDao;
     }
 
+    /**
+     * This method return set of GameEntity for player with id playerId
+     * @param idPlayer - id player's
+     * @return set of GameEntity
+     */
     public Set<GameEntity> getListGamesOfPlayer(int idPlayer) {
         final List<Integer> listIdGames = listOfPlayersAndGames.stream().filter(p -> p.getPlayerId() == idPlayer).map(p -> p.getGameId()).collect(Collectors.toList());
 
@@ -31,14 +36,23 @@ public class PlayerGameDAO {
     }
 
 
-    public List<Integer> getListPlayersOfGames(int idGame) {
-        List<Integer> listIdPlayers = listOfPlayersAndGames.stream().filter(p -> p.getGameId() == idGame).map(p -> p.getPlayerId()).collect(Collectors.toList());
+    /**
+     * This method return list of ids of players whose have game with gameId
+     * @param gameId
+     * @return
+     */
+    public List<Integer> getListPlayersOfGames(int gameId) {
+        List<Integer> listIdPlayers = listOfPlayersAndGames.stream().filter(p -> p.getGameId() == gameId).map(p -> p.getPlayerId()).collect(Collectors.toList());
 
         return listIdPlayers;
 
     }
 
-    //numberOfRows can't be greater than number of rows in lisOfGames
+    /**
+     * This method help in init data to test
+     * @param numberOfRows - numberOfRows can't be greater than number of rows in lisOfGames
+     */
+
     public void initListOfPlayersAndGames(int numberOfRows) {
         for (int i = 0; i < numberOfRows; i++) {
             PlayerGameEntity playerGameEntity = new PlayerGameEntity();
@@ -49,6 +63,12 @@ public class PlayerGameDAO {
         }
     }
 
+    /**
+     * This method add information which player has game with gameId and call addGame method in GameDAO
+     * @param game - entity of Game
+     * @param playerId - player id
+     * @return new id rows in list with players and games
+     */
     public int addGame(GameEntity game, int playerId) {
         //add game to set of all games
         int idGame = gameDao.getSizeSetOfGames();

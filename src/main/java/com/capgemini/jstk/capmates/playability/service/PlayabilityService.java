@@ -25,8 +25,8 @@ public class PlayabilityService {
         return playabilityDAO.addNewTerm(playabilityEntity);
     }
 
-    public void removeTerm(int playabilityId){
-        playabilityDAO.removeTerm(playabilityId);
+    public int removeTerm(int playabilityId){
+        return playabilityDAO.removeTerm(playabilityId);
 
     }
 
@@ -36,7 +36,11 @@ public class PlayabilityService {
 
     }
 
-    public void addCommentToTerm(int playabilityId, String comment){
-        playabilityDAO.addCommentToTerm(playabilityId, comment);
+    public int addCommentToTerm(int playabilityId, String comment){
+        return playabilityDAO.addCommentToTerm(playabilityId, comment);
+    }
+
+    public List<PlayabilityDTO> getAllPlayability(){
+        return mapperPlayability.mapfromListDAO(playabilityDAO.getAllPlayability());
     }
 }

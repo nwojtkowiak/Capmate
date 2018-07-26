@@ -1,8 +1,8 @@
 package com.capgemini.jstk.capmates.player.contoller;
 
 import com.capgemini.jstk.capmates.exception.PlayerNotExist;
-import com.capgemini.jstk.capmates.player.service.PlayerService;
 import com.capgemini.jstk.capmates.player.service.PlayerDTO;
+import com.capgemini.jstk.capmates.player.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

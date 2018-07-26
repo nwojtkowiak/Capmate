@@ -31,8 +31,8 @@ public class HistoryService {
         return mapperHistory.mapfromListDAO(historyEntities);
     }
 
-    public List<HistoryDTO> getPlayedGamesForPlayerBetweemDates(int playerId, LocalDate dateFrom, LocalDate dateTo) {
-        List<HistoryEntity> historyEntities = historyDAO.getPlayedGamesForPlayerBetweemDates(playerId, dateFrom, dateTo);
+    public List<HistoryDTO> getPlayedGamesForPlayerBetweenDates(int playerId, LocalDate dateFrom, LocalDate dateTo) {
+        List<HistoryEntity> historyEntities = historyDAO.getPlayedGamesForPlayerBetweenDates(playerId, dateFrom, dateTo);
         return mapperHistory.mapfromListDAO(historyEntities);
     }
 

@@ -1,6 +1,7 @@
 package com.capgemini.jstk.capmates.playability.repository;
 
 import com.capgemini.jstk.capmates.enums.Days;
+
 import java.time.LocalTime;
 
 public class PlayabilityEntity {

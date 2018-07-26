@@ -23,15 +23,23 @@ public class PlayerService {
     private PlayerGameDAO playerGameDAO;
 
     @Autowired
-    public PlayerService(MapperPlayer mapperUser, MapperGame mapperGame,
+    public PlayerService(MapperPlayer mapperPlayer, MapperGame mapperGame,
                          PlayerDAO playerDAO, PlayerGameDAO playerGameDAO) {
 
-        this.mapperPlayer = mapperUser;
+        this.mapperPlayer = mapperPlayer;
         this.playerDAO = playerDAO;
         this.playerGameDAO = playerGameDAO;
         this.mapperGame = mapperGame;
     }
 
+    /**
+     * This method return dto of player with id.
+     * When player with this id doesn't exist then throw PlayerNotExist
+     *
+     * @param id - id of player
+     * @return information of player as PlayerDTO
+     * @throws PlayerNotExist
+     */
     public PlayerDTO getPlayerInformation(int id) throws PlayerNotExist {
 
         try {
@@ -43,12 +51,24 @@ public class PlayerService {
 
     }
 
+    /**
+     * This method save information of player to data base
+     *
+     * @param playerDTO - DTO of player
+     * @return information of player which was updated as PlayerDTO
+     */
     public PlayerDTO savePlayerInformation(PlayerDTO playerDTO) {
 
         playerDAO.updateUser(mapperPlayer.mapfromDTO(playerDTO));
         return playerDTO;
     }
 
+    /**
+     * This method add new player
+     *
+     * @param playerDTO - information about new player
+     * @return information of player which was added as PlayerDTO
+     */
     public PlayerDTO addPlayer(PlayerDTO playerDTO) {
 
         PlayerEntity player = mapperPlayer.mapfromDTO(playerDTO);
@@ -57,6 +77,14 @@ public class PlayerService {
     }
 
 
+    /**
+     * This method change password for user. When old password is equal to password in data base then password will be change
+     *
+     * @param playerDTO   - information about player which want to change password
+     * @param oldPassword - password which will be change
+     * @param newPassword - password which will be save
+     * @return information of player as PlayerDTO with change password
+     */
     public PlayerDTO changePassword(PlayerDTO playerDTO, String oldPassword, String newPassword) {
 
         PlayerDTO testPlayerDto = mapperPlayer.mapFromDAO(playerDAO.getUserById(playerDTO.getId()));
@@ -70,6 +98,13 @@ public class PlayerService {
     }
 
 
+    /**
+     * This method add new game for player. This method call add game to list of all games.
+     *
+     * @param playerDTO - information of player as PlayerDTO
+     * @param gameDTO   - information of game as GameDTO
+     * @return id new game
+     */
     public int addGame(PlayerDTO playerDTO, GameDTO gameDTO) {
 
         //add game to player
@@ -84,6 +119,12 @@ public class PlayerService {
 
     }
 
+    /**
+     * This method remove game only from list of game player's
+     *
+     * @param playerDTO - information about player as PlayerDTO
+     * @param gameDTO   - information about game as GameDTO
+     */
     public void removeGame(PlayerDTO playerDTO, GameDTO gameDTO) {
         playerDTO.getGames().remove(gameDTO);
         PlayerEntity rankingEntity = mapperPlayer.mapfromDTO(playerDTO);
@@ -91,15 +132,34 @@ public class PlayerService {
     }
 
 
+    /**
+     * This method count level for player by points.
+     *
+     * @param points - points which has a player
+     * @return level of player - BEGINNER when has less than 500 points
+     * INTERMEDIATE when less than 1000 points
+     * ADVANCED when has 1000 or more points
+     */
     public Level countLevel(long points) {
         return Level.getLevelByPoints(points);
     }
 
+    /**
+     * This method return set of game which has player with playerId
+     *
+     * @param playerId - player id
+     * @return set of information of games as GameDTO
+     */
     public Set<GameDTO> getGamesOfPlayer(int playerId) {
         Set<GameEntity> setOfGamesById = playerGameDAO.getListGamesOfPlayer(playerId);
         return mapperGame.mapfromSetDAO(setOfGamesById);
     }
 
+    /**
+     * This method return set of all players
+     *
+     * @return set of information of players as PlayerDTO
+     */
     public Set<PlayerDTO> getAllPlayers() {
         Set<PlayerEntity> setOfPlayers = playerDAO.getPlayers();
         return mapperPlayer.mapfromSetDAO(setOfPlayers);

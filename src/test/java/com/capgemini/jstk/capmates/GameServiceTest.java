@@ -26,7 +26,7 @@ public class GameServiceTest {
         playerGameDAO.initListOfPlayersAndGames(5);
 
         MapperGame mapperGame = new MapperGame();
-        gameService = new GameService(mapperGame, gameDAO);
+        gameService = new GameService(mapperGame, gameDAO, playerGameDAO);
 
     }
 
