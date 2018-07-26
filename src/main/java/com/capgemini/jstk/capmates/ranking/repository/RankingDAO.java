@@ -1,9 +1,11 @@
 package com.capgemini.jstk.capmates.ranking.repository;
 
-import com.capgemini.jstk.capmates.ranking.service.RankingDTO;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Repository
@@ -11,51 +13,62 @@ public class RankingDAO {
 
     private List<RankingEntity> listOfRanking;
 
-    public RankingDAO(){
+    public RankingDAO() {
         listOfRanking = new LinkedList<>();
     }
 
-    public long getPointsForPlayerAndGame(int playerId, int gameId){
-        return listOfRanking.stream().filter(p -> p.getPlayerId() == playerId && p.getGameId() == gameId ).mapToLong(p -> p.getPoints()).sum();
+    public long getPointsForPlayerAndGame(int playerId, int gameId) {
+        return listOfRanking.stream().filter(checkPlayerIdAndGameId(playerId, gameId)).mapToLong(p -> p.getPoints()).sum();
     }
 
-    //TODO sort this by points
-    public Map<Integer, Long> getListOfPlayersWithPointsPerGame(int gameId){
-        return listOfRanking.stream().filter(p -> p.getGameId() == gameId ).collect(
+    public Map<Integer, Long> getListOfPlayersWithPointsPerGame(int gameId) {
+        return listOfRanking.stream().filter(p -> p.getGameId() == gameId).collect(
                 Collectors.toMap(RankingEntity::getPlayerId, RankingEntity::getPoints));
     }
 
-    public void addPointsForPlayer(int playerId, int gameId, long points){
+    public void addPointsForPlayer(int playerId, int gameId, long points) {
 
-        RankingEntity rankingEntity = listOfRanking.stream().filter(p -> p.getPlayerId() == playerId && p.getGameId() == gameId).findFirst().get();
+        RankingEntity rankingEntity = listOfRanking.stream().filter(checkPlayerIdAndGameId(playerId, gameId)).findFirst().get();
         listOfRanking.remove(rankingEntity);
 
         long sumOfPoints = rankingEntity.getPoints() + points;
-        rankingEntity.setPoints( sumOfPoints );
+        rankingEntity.setPoints(sumOfPoints);
 
         listOfRanking.add(rankingEntity);
 
     }
 
-    public void addNewRanking(List<RankingEntity> entities){
-        int increment = 1;
-        int size = listOfRanking.size();
+    public void addNewRanking(RankingEntity rankingEntity) {
 
-        for(RankingEntity rankingEntity : entities){
-            rankingEntity.setId(size + increment);
-            increment++;
-        }
+        int id = listOfRanking.size() + 1;
 
-        listOfRanking.addAll(entities);
+        rankingEntity.setId(id);
 
+        listOfRanking.add(rankingEntity);
     }
 
-    public List<RankingEntity> getRankingForPlayer(int playerId){
+    public List<RankingEntity> getRankingForPlayer(int playerId) {
+        
         return listOfRanking.stream().filter(p -> p.getPlayerId() == playerId).collect(Collectors.toList());
     }
 
-    public void init(int numberOfRows){
-        for(int i = 0; i < numberOfRows; i++){
+    public void updatePointsPlayerForGame(int playerId, int gameId, long points) {
+
+        RankingEntity rankingEntity;
+        rankingEntity = listOfRanking.stream().filter(checkPlayerIdAndGameId(playerId, gameId)).findFirst().get();
+
+        int indexOfEntity = listOfRanking.indexOf(rankingEntity);
+        long newPoints = rankingEntity.getPoints() + points;
+        listOfRanking.get(indexOfEntity).setPoints(newPoints);
+
+    }
+
+    private Predicate<RankingEntity> checkPlayerIdAndGameId(int playerId, int gameId) {
+        return p -> p.getGameId() == gameId && p.getPlayerId() == playerId;
+    }
+
+    public void init(int numberOfRows) {
+        for (int i = 0; i < numberOfRows; i++) {
             RankingEntity rankingEntity = new RankingEntity();
             rankingEntity.setPlayerId(i);
             rankingEntity.setGameId(0);
@@ -63,16 +76,5 @@ public class RankingDAO {
             listOfRanking.add(rankingEntity);
         }
     }
-
-    public void updatePointsPlayerForGame(int playerId, int gameId, long points){
-
-        RankingEntity rankingEntity;
-        rankingEntity = listOfRanking.stream().filter(p -> p.getGameId() == gameId && p.getPlayerId() == playerId).findFirst().get();
-        int indexOfEntity = listOfRanking.indexOf(rankingEntity);
-        long newPoints = rankingEntity.getPoints() + points;
-        listOfRanking.get(indexOfEntity).setPoints(newPoints);
-
-    }
-
 
 }

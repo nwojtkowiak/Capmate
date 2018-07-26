@@ -1,6 +1,5 @@
 package com.capgemini.jstk.capmates.player.repository;
 
-import com.capgemini.jstk.capmates.exception.PlayerNotExist;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -11,61 +10,47 @@ import java.util.stream.Collectors;
 @Repository
 public class PlayerDAO {
 
-    private Map<Integer,PlayerEntity> listOfUser;
+    private Map<Integer, PlayerEntity> listOfPlayers;
 
-    public PlayerDAO(){
-        this.listOfUser = new HashMap<>();
+    public PlayerDAO() {
+        this.listOfPlayers = new HashMap<>();
     }
 
-    public Set<PlayerEntity> getUsers(){
-        return listOfUser.values().stream().collect(Collectors.toSet());
+    public Set<PlayerEntity> getPlayers() {
+        return listOfPlayers.values().stream().collect(Collectors.toSet());
     }
 
-    public PlayerEntity getUserById(int id){
-        return listOfUser.get(id);
+    public PlayerEntity getUserById(int id) {
+        return listOfPlayers.get(id);
     }
 
-    public PlayerEntity getUserByEmail(String email) throws PlayerNotExist {
-
-        for(PlayerEntity player : listOfUser.values()){
-            if(player.getEmail().equals(email)){
-                return player;
-            }
-        }
-
-        throw new PlayerNotExist();
+    public void updateUser(PlayerEntity player) {
+        listOfPlayers.put(player.getId(), player);
     }
 
-
-    public void updateUser(PlayerEntity user){
-        listOfUser.put(user.getId(), user);
+    public void addPlayer(PlayerEntity player) {
+        int id = listOfPlayers.size() + 1;
+        player.setId(id);
+        listOfPlayers.put(player.getId(), player);
     }
 
-    public void addUser(PlayerEntity user){
-        listOfUser.put(user.getId(), user);
-    }
+//    public int getNumberOfAllPlayers() {
+//        return listOfPlayers.size();
+//    }
 
+    public void initListOfUsers(int numberOfUsers) {
 
-    public int getNumberOfAllPlayers(){
-        return listOfUser.size();
-    }
-
-
-
-    public void initListOfUsers(int numberOfUsers){
-
-
-        for(int i = 0; i < numberOfUsers;  i++) {
+        for (int i = 0; i < numberOfUsers; i++) {
             PlayerEntity player = new PlayerEntity();
-            player.setEmail("player"+i+"@cap.com");
-            player.setFirstName("First "+i);
-            player.setLastName("Last "+i);
-            player.setMotto("Hakuna Matata "+i);
+            player.setEmail("player" + i + "@cap.com");
+            player.setFirstName("First " + i);
+            player.setLastName("Last " + i);
+            player.setMotto("Hakuna Matata " + i);
             player.setPassword("password");
             player.setId(i);
-            listOfUser.put(i, player);
+            listOfPlayers.put(i, player);
         }
     }
 
 
-   }
+}

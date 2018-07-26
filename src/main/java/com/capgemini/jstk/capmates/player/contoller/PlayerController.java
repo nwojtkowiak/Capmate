@@ -29,10 +29,7 @@ public class PlayerController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     public PlayerDTO showPlayerById(@PathVariable(value = "id") int id) {
 
-        PlayerDTO playerDTO = new PlayerDTO();
-        playerDTO.setEmail("test@cap.com");
-        playerDTO.setFirstName("Natalia");
-        playerDTO.setMotto("Hakuna Matata");
+        PlayerDTO playerDTO;
 
         try {
             playerDTO = managePlayerProfile.getPlayerInformation(id);

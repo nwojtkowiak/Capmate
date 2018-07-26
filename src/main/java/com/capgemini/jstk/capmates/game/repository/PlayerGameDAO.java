@@ -3,7 +3,9 @@ package com.capgemini.jstk.capmates.game.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Repository
@@ -14,12 +16,12 @@ public class PlayerGameDAO {
     private GameDAO gameDao;
 
     @Autowired
-    public PlayerGameDAO(GameDAO gameDao){
+    public PlayerGameDAO(GameDAO gameDao) {
         listOfPlayersAndGames = new HashSet<>();
         this.gameDao = gameDao;
     }
 
-    public Set<GameEntity> getListGamesOfPlayer(int idPlayer){
+    public Set<GameEntity> getListGamesOfPlayer(int idPlayer) {
         final List<Integer> listIdGames = listOfPlayersAndGames.stream().filter(p -> p.getPlayerId() == idPlayer).map(p -> p.getGameId()).collect(Collectors.toList());
 
         Set<GameEntity> listGames = gameDao.getGames();
@@ -29,7 +31,7 @@ public class PlayerGameDAO {
     }
 
 
-    public List<Integer> getListPlayersOfGames(int idGame){
+    public List<Integer> getListPlayersOfGames(int idGame) {
         List<Integer> listIdPlayers = listOfPlayersAndGames.stream().filter(p -> p.getGameId() == idGame).map(p -> p.getPlayerId()).collect(Collectors.toList());
 
         return listIdPlayers;
@@ -37,8 +39,8 @@ public class PlayerGameDAO {
     }
 
     //numberOfRows can't be greater than number of rows in lisOfGames
-    public void initListOfPlayersAndGames(int numberOfRows){
-        for(int i = 0; i < numberOfRows; i++){
+    public void initListOfPlayersAndGames(int numberOfRows) {
+        for (int i = 0; i < numberOfRows; i++) {
             PlayerGameEntity playerGameEntity = new PlayerGameEntity();
             playerGameEntity.setId(i);
             playerGameEntity.setGameId(i);
@@ -47,7 +49,7 @@ public class PlayerGameDAO {
         }
     }
 
-    public int addGame(GameEntity game, int playerId){
+    public int addGame(GameEntity game, int playerId) {
         //add game to set of all games
         int idGame = gameDao.getSizeSetOfGames();
         game.setId(idGame);

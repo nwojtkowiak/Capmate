@@ -11,9 +11,9 @@ public enum Level {
         this.pointsRequired = pointsRequired;
     }
 
-    public int getNumber() {
-        return number;
-    }
+//    public int getNumber() {
+//        return number;
+//    }
 
     public long getPointsRequired() {
         return pointsRequired;

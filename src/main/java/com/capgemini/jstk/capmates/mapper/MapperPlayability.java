@@ -4,6 +4,9 @@ import com.capgemini.jstk.capmates.playability.repository.PlayabilityEntity;
 import com.capgemini.jstk.capmates.playability.service.PlayabilityDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class MapperPlayability implements MapperObject<PlayabilityEntity, PlayabilityDTO> {
 
@@ -33,5 +36,15 @@ public class MapperPlayability implements MapperObject<PlayabilityEntity, Playab
         playabilityEntity.setComment(object.getComment());
 
         return playabilityEntity;
+    }
+
+    public List<PlayabilityDTO> mapfromListDAO(List<PlayabilityEntity> listObject) {
+
+        List<PlayabilityDTO> allPlayability = new ArrayList<>();
+        for (PlayabilityEntity playability : listObject) {
+            allPlayability.add(mapFromDAO(playability));
+        }
+
+        return allPlayability;
     }
 }

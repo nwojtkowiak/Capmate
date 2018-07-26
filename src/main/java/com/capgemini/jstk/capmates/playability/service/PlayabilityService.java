@@ -6,6 +6,8 @@ import com.capgemini.jstk.capmates.playability.repository.PlayabilityEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PlayabilityService {
 
@@ -26,5 +28,15 @@ public class PlayabilityService {
     public void removeTerm(int playabilityId){
         playabilityDAO.removeTerm(playabilityId);
 
+    }
+
+    public List<PlayabilityDTO> getPlayerWithSimilarPlayability(int playerId){
+        List<PlayabilityEntity> playabilityEntity = playabilityDAO.getListSimilarPlayability(playerId);
+        return mapperPlayability.mapfromListDAO(playabilityEntity);
+
+    }
+
+    public void addCommentToTerm(int playabilityId, String comment){
+        playabilityDAO.addCommentToTerm(playabilityId, comment);
     }
 }

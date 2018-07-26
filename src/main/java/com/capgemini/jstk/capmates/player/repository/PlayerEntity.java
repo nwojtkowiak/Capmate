@@ -6,7 +6,6 @@ public class PlayerEntity {
     private String firstName;
     private String lastName;
     private String email;
-   // private StringBuffer password;
     private String password;
     private String motto;
 

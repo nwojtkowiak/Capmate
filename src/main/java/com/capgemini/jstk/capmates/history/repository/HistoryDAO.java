@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Repository
@@ -24,6 +25,7 @@ public class HistoryDAO {
         List<HistoryEntity> playedGames = getPlayedGamesForPlayer(playerId);
         return playedGames.stream().filter(p -> p.getDate().compareTo(date) == 0).collect(Collectors.toList());
     }
+
     public List<HistoryEntity> getPlayedGamesForPlayerBetweemDates(int playerId, LocalDate dateFrom, LocalDate dateTo){
         List<HistoryEntity> playedGames = getPlayedGamesForPlayer(playerId);
         return playedGames.stream().filter(p -> p.getDate().isAfter(dateFrom) && p.getDate().isBefore(dateTo)).collect(Collectors.toList());
@@ -35,15 +37,19 @@ public class HistoryDAO {
     }
 
     public List<HistoryEntity> getWinGamesForPlayer(int playerId){
-        return listOfHistory.stream().filter(p-> (p.getPlayerId() == playerId && p.getResultGame() == ResultGame.WIN)).collect(Collectors.toList());
+        return listOfHistory.stream().filter(checkPlayerAndResultGame(playerId,ResultGame.WIN)).collect(Collectors.toList());
     }
 
     public List<HistoryEntity> getLoseGamesForPlayer(int playerId){
-        return listOfHistory.stream().filter(p->(p.getPlayerId() == playerId && p.getResultGame() == ResultGame.LOSE)).collect(Collectors.toList());
+        return listOfHistory.stream().filter(checkPlayerAndResultGame(playerId,ResultGame.LOSE)).collect(Collectors.toList());
     }
 
     public List<HistoryEntity> getRemisGamesForPlayer(int playerId){
-        return listOfHistory.stream().filter(p->(p.getPlayerId() == playerId && p.getResultGame() == ResultGame.REMIS)).collect(Collectors.toList());
+        return listOfHistory.stream().filter(checkPlayerAndResultGame(playerId,ResultGame.REMIS)).collect(Collectors.toList());
+    }
+
+    private Predicate<HistoryEntity> checkPlayerAndResultGame(int playerId, ResultGame resultGame){
+        return p-> p.getPlayerId() == playerId && p.getResultGame() == ResultGame.WIN;
     }
 
     public void init(int numberOfRowInHistory){

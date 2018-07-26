@@ -1,7 +1,6 @@
 package com.capgemini.jstk.capmates.game.service;
 
 import javafx.util.Pair;
-import org.springframework.stereotype.Service;
 
 
 public class GameDTO {
@@ -10,10 +9,11 @@ public class GameDTO {
     private boolean isNeedMore;
     private Pair<Integer, Integer> numberOfPlayers;
 
-    public GameDTO(){
+    public GameDTO() {
 
     }
-    public GameDTO(String name, boolean isNeedMore){
+
+    public GameDTO(String name, boolean isNeedMore) {
         this.name = name;
         this.isNeedMore = isNeedMore;
     }
@@ -42,11 +42,15 @@ public class GameDTO {
         this.id = id;
     }
 
-    public int getMinNumberOfPlayers() { return numberOfPlayers.getKey(); }
+    public int getMinNumberOfPlayers() {
+        return numberOfPlayers.getKey();
+    }
 
-    public int getMaxNumberOfPlayers() { return numberOfPlayers.getValue(); }
+    public int getMaxNumberOfPlayers() {
+        return numberOfPlayers.getValue();
+    }
 
-    public Pair<Integer, Integer> getNumberOfPlayers(){
+    public Pair<Integer, Integer> getNumberOfPlayers() {
         return numberOfPlayers;
     }
 

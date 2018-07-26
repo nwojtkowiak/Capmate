@@ -4,6 +4,9 @@ import com.capgemini.jstk.capmates.player.repository.PlayerEntity;
 import com.capgemini.jstk.capmates.player.service.PlayerDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Component
 public class MapperPlayer implements MapperObject<PlayerEntity, PlayerDTO> {
 
@@ -41,5 +44,15 @@ public class MapperPlayer implements MapperObject<PlayerEntity, PlayerDTO> {
             return player;
         }
         throw new NullPointerException();
+    }
+
+    public Set<PlayerDTO> mapfromSetDAO(Set<PlayerEntity> listObject) {
+
+        Set<PlayerDTO> games = new HashSet<>();
+        for (PlayerEntity game : listObject) {
+            games.add(mapFromDAO(game));
+        }
+
+        return games;
     }
 }
