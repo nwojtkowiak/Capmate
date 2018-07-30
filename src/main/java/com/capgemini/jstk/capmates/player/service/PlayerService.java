@@ -210,7 +210,7 @@ public class PlayerService {
         if(playerDTO.getGames().size() > 0){
 
         }*/
-       
+
         return mapperPlayer.mapfromSetDAO(results);
     }
 

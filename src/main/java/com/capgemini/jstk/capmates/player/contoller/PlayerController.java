@@ -6,6 +6,7 @@ import com.capgemini.jstk.capmates.player.service.PlayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -49,10 +50,9 @@ public class PlayerController {
             return playerDTO;
 
         } catch (Exception e) {
-            playerDTO = new PlayerDTO();
+            throw new ResourceNotFoundException();
         }
 
-        return playerDTO;
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
