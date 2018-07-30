@@ -12,6 +12,8 @@ import com.capgemini.jstk.capmates.player.repository.PlayerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -72,8 +74,7 @@ public class PlayerService {
     public PlayerDTO addPlayer(PlayerDTO playerDTO) {
 
         PlayerEntity player = mapperPlayer.mapfromDTO(playerDTO);
-        playerDAO.addPlayer(player);
-        return playerDTO;
+        return mapperPlayer.mapFromDAO(playerDAO.addPlayer(player));
     }
 
 
@@ -163,6 +164,54 @@ public class PlayerService {
     public Set<PlayerDTO> getAllPlayers() {
         Set<PlayerEntity> setOfPlayers = playerDAO.getPlayers();
         return mapperPlayer.mapfromSetDAO(setOfPlayers);
+    }
+
+    public Set<PlayerDTO> searchByFields(PlayerDTO playerDTO) {
+        Set<PlayerEntity> results = new HashSet<>();
+        Set<PlayerEntity> foundPlayers;
+        boolean checked = false;
+
+        if (playerDTO.getFirstName().length() > 0) {
+            foundPlayers = playerDAO.searchByFirstName(playerDTO.getFirstName());
+            results.addAll(foundPlayers);
+            checked = true;
+        }
+        if (playerDTO.getLastName().length() > 0) {
+            foundPlayers = playerDAO.searchByLastName(playerDTO.getLastName());
+            if (checked) {
+                results.retainAll(foundPlayers);
+
+            } else {
+                results.addAll(foundPlayers);
+                checked = true;
+            }
+
+        }
+        if (playerDTO.getEmail().length() > 0) {
+            foundPlayers = playerDAO.searchByEmail(playerDTO.getEmail());
+            if (checked) {
+                results.retainAll(foundPlayers);
+            } else {
+                results.addAll(foundPlayers);
+                checked = true;
+            }
+        }
+        if (playerDTO.getMotto().length() > 0) {
+            foundPlayers = playerDAO.searchByMotto(playerDTO.getMotto());
+            if (checked) {
+                results.retainAll(foundPlayers);
+            } else {
+                results.addAll(foundPlayers);
+                checked = true;
+            }
+        }
+        //TODO
+        /*
+        if(playerDTO.getGames().size() > 0){
+
+        }*/
+       
+        return mapperPlayer.mapfromSetDAO(results);
     }
 
 

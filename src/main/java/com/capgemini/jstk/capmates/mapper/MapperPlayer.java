@@ -48,11 +48,11 @@ public class MapperPlayer implements MapperObject<PlayerEntity, PlayerDTO> {
 
     public Set<PlayerDTO> mapfromSetDAO(Set<PlayerEntity> listObject) {
 
-        Set<PlayerDTO> games = new HashSet<>();
+        Set<PlayerDTO> players = new HashSet<>();
         for (PlayerEntity game : listObject) {
-            games.add(mapFromDAO(game));
+            players.add(mapFromDAO(game));
         }
 
-        return games;
+        return players;
     }
 }

@@ -1,5 +1,9 @@
 package com.capgemini.jstk.capmates.player.repository;
 
+import com.capgemini.jstk.capmates.game.repository.GameEntity;
+
+import java.util.List;
+
 public class PlayerEntity {
 
     private int id;
@@ -8,6 +12,7 @@ public class PlayerEntity {
     private String email;
     private String password;
     private String motto;
+    private List<GameEntity> games;
 
     public int getId() {
         return id;
@@ -57,4 +62,11 @@ public class PlayerEntity {
         this.motto = motto;
     }
 
+    public List<GameEntity> getGames() {
+        return games;
+    }
+
+    public void setGames(List<GameEntity> games) {
+        this.games = games;
+    }
 }

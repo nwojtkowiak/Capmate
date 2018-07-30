@@ -1,15 +1,18 @@
 package com.capgemini.jstk.capmates.player.contoller;
 
-import com.capgemini.jstk.capmates.exception.PlayerNotExist;
+
 import com.capgemini.jstk.capmates.player.service.PlayerDTO;
 import com.capgemini.jstk.capmates.player.service.PlayerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 @RestController
 @RequestMapping("/player")
@@ -17,16 +20,26 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class PlayerController {
 
     private PlayerService managePlayerProfile;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlayerController.class);
 
     @Autowired
-    public PlayerController(PlayerService managePlayerProfile){
+    public PlayerController(PlayerService managePlayerProfile) {
 
         this.managePlayerProfile = managePlayerProfile;
 
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public PlayerDTO addNewPlayer(@RequestBody PlayerDTO playerDTO) {
+        LOGGER.info("add: FirstName: " + playerDTO);
+
+        playerDTO = managePlayerProfile.addPlayer(playerDTO);
+
+        return playerDTO;
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public PlayerDTO showPlayerById(@PathVariable(value = "id") int id) {
 
         PlayerDTO playerDTO;
@@ -35,40 +48,27 @@ public class PlayerController {
             playerDTO = managePlayerProfile.getPlayerInformation(id);
             return playerDTO;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             playerDTO = new PlayerDTO();
-            playerDTO.setEmail("test@cap.com");
-            playerDTO.setFirstName("Natalia");
-            playerDTO.setMotto("Hakuna Matata");
         }
 
         return playerDTO;
     }
 
-//TODO change this
-    @RequestMapping(value = "/{id}/{firstName}", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
-    public PlayerDTO changeFirstName(@PathVariable(value = "id") int id, @PathVariable(value = "firstName") String firstName) {
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public Set<PlayerDTO> search(@RequestParam(name = "firstName", defaultValue = "") String firstName, @RequestParam(name = "lastName", defaultValue = "") String lastName,
+                                 @RequestParam(name = "motto", defaultValue = "") String motto, @RequestParam(name = "email", defaultValue = "") String email){
 
-        PlayerDTO playerDTO;
+        //@RequestBody PlayerDTO playerDTO) {
 
-        try {
-            playerDTO = managePlayerProfile.getPlayerInformation(id);
-            playerDTO.setFirstName(firstName);
-            return managePlayerProfile.savePlayerInformation(playerDTO);
+        PlayerDTO playerDTO = new PlayerDTO();
+        playerDTO.setFirstName(firstName);
+        playerDTO.setLastName(lastName);
+        playerDTO.setMotto(motto);
+        playerDTO.setEmail(email);
 
-        }catch (PlayerNotExist e){
-            System.out.println(e.getMessage());
-        }
-
-        return null;
+        return managePlayerProfile.searchByFields(playerDTO);
     }
-
-
-
-
-
-
-
 
 
 }

@@ -21,6 +21,7 @@ public class PlayerDTO {
     public PlayerDTO(){
         this.firstName = "";
         this.lastName = "";
+        this.email = "";
         this.password ="";
         this.motto = "";
         this.level = Level.BEGINNER;
