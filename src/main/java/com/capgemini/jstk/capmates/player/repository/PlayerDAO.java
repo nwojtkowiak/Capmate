@@ -3,10 +3,7 @@ package com.capgemini.jstk.capmates.player.repository;
 import com.capgemini.jstk.capmates.game.repository.GameEntity;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -18,8 +15,8 @@ public class PlayerDAO {
         this.listOfPlayers = new HashMap<>();
     }
 
-    public Set<PlayerEntity> getPlayers() {
-        return listOfPlayers.values().stream().collect(Collectors.toSet());
+    public List<PlayerEntity> getPlayers() {
+        return listOfPlayers.values().stream().collect(Collectors.toList());
     }
 
     public PlayerEntity getUserById(int id) {
@@ -70,22 +67,22 @@ public class PlayerDAO {
 //                        checkEmail(email, p) && checkMotto(motto, p)).collect(Collectors.toSet());
 //    }
 
-    public Set<PlayerEntity> searchByFirstName(String firstName) {
+    public List<PlayerEntity> searchByFirstName(String firstName) {
         return listOfPlayers.values().stream().filter(p ->
-                checkFirstName(firstName, p)).collect(Collectors.toSet());
+                checkFirstName(firstName, p)).collect(Collectors.toList());
     }
 
-    public Set<PlayerEntity> searchByLastName(String lastName) {
+    public List<PlayerEntity> searchByLastName(String lastName) {
         return listOfPlayers.values().stream().filter(p ->
-                checkLastName(lastName, p)).collect(Collectors.toSet());
+                checkLastName(lastName, p)).collect(Collectors.toList());
     }
 
-    public Set<PlayerEntity> searchByEmail(String email) {
-        return listOfPlayers.values().stream().filter(p -> checkEmail(email, p)).collect(Collectors.toSet());
+    public List<PlayerEntity> searchByEmail(String email) {
+        return listOfPlayers.values().stream().filter(p -> checkEmail(email, p)).collect(Collectors.toList());
     }
 
-    public Set<PlayerEntity> searchByMotto(String motto) {
-        return listOfPlayers.values().stream().filter(p -> checkMotto(motto, p)).collect(Collectors.toSet());
+    public List<PlayerEntity> searchByMotto(String motto) {
+        return listOfPlayers.values().stream().filter(p -> checkMotto(motto, p)).collect(Collectors.toList());
     }
 
     public Set<PlayerEntity> searchByGames(Set<GameEntity> games) {

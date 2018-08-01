@@ -12,6 +12,7 @@ import com.capgemini.jstk.capmates.player.repository.PlayerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -161,14 +162,14 @@ public class PlayerService {
      *
      * @return set of information of players as PlayerDTO
      */
-    public Set<PlayerDTO> getAllPlayers() {
-        Set<PlayerEntity> setOfPlayers = playerDAO.getPlayers();
+    public List<PlayerDTO> getAllPlayers() {
+        List<PlayerEntity> setOfPlayers = playerDAO.getPlayers();
         return mapperPlayer.mapfromSetDAO(setOfPlayers);
     }
 
-    public Set<PlayerDTO> searchByFields(PlayerDTO playerDTO) {
-        Set<PlayerEntity> results = new HashSet<>();
-        Set<PlayerEntity> foundPlayers;
+    public List<PlayerDTO> searchByFields(PlayerDTO playerDTO) {
+        List<PlayerEntity> results = new ArrayList<>();
+        List<PlayerEntity> foundPlayers;
         boolean checked = false;
 
         if (playerDTO.getFirstName().length() > 0) {
