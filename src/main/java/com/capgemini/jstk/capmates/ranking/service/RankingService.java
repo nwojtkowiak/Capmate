@@ -1,6 +1,7 @@
 package com.capgemini.jstk.capmates.ranking.service;
 
 import com.capgemini.jstk.capmates.exception.PlayerNotExist;
+import com.capgemini.jstk.capmates.exception.ResourceNotFoundException;
 import com.capgemini.jstk.capmates.game.service.GameService;
 import com.capgemini.jstk.capmates.mapper.MapperRanking;
 import com.capgemini.jstk.capmates.player.service.PlayerService;
@@ -46,7 +47,7 @@ public class RankingService {
                 playerService.getPlayerInformation(playerId);
                 updatePointsForGame(playerId, dto.getGameId(), dto.getPoints());
 
-            } catch (PlayerNotExist playerNotExist) {
+            } catch (ResourceNotFoundException e) {
                 rankingDAO.addNewRanking(mapperRanking.mapfromDTO(dto));
             }
         }

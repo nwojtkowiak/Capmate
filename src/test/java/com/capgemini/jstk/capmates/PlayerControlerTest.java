@@ -1,47 +1,31 @@
 package com.capgemini.jstk.capmates;
 
-import com.capgemini.jstk.capmates.player.contoller.PlayerController;
 import com.capgemini.jstk.capmates.player.service.PlayerDTO;
 import com.capgemini.jstk.capmates.player.service.PlayerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.*;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import org.springframework.http.MediaType;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 //@RunWith(MockitoJUnitRunner.class)
 @RunWith(SpringRunner.class)
@@ -123,7 +107,6 @@ public class PlayerControlerTest {
                 .andExpect(jsonPath("id",is(0)));
 
 
-
         //then
         verify(playerService, times(1)).addPlayer(Mockito.any(PlayerDTO.class));
     }
@@ -144,4 +127,17 @@ public class PlayerControlerTest {
         //then
         verify(playerService, times(1)).searchByFields(Mockito.any(PlayerDTO.class));
     }
+
+    @Test
+    public void getResourceNotFoundException() throws Exception {
+
+        //when
+        when(playerService.getPlayerInformation(30)).thenReturn(null);
+        mockMvc.perform(get("/player/30")).andExpect(status().is4xxClientError());
+
+        //then
+        verify(playerService, times(1)).getPlayerInformation(30);
+    }
+
+
 }

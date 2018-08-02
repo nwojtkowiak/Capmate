@@ -39,14 +39,14 @@ public class PlayerController {
         LOGGER.info("add: FirstName: " + playerDTO.getFirstName());
         if (playerDTO != null) {
             playerDTO = managePlayerProfile.addPlayer(playerDTO);
-        }else{
+        } else {
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         return playerDTO;
     }
 
-    @RequestMapping( method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<PlayerDTO> showAllPlayer() {
 
         return managePlayerProfile.getAllPlayers();
@@ -54,17 +54,18 @@ public class PlayerController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public PlayerDTO showPlayerById(@PathVariable(value = "id") int id) {
-        try {
-            return managePlayerProfile.getPlayerInformation(id);
-        } catch (Exception e) {
+    public PlayerDTO showPlayerById(@PathVariable(value = "id") int id) throws ResourceNotFoundException{
+        PlayerDTO playerDTO = managePlayerProfile.getPlayerInformation(id);
+        if(playerDTO != null){
+            return  playerDTO;
+        }
         throw new ResourceNotFoundException();
-    }
+
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public List<PlayerDTO> search(@RequestParam(name = "firstName", defaultValue = "") String firstName, @RequestParam(name = "lastName", defaultValue = "") String lastName,
-                                 @RequestParam(name = "motto", defaultValue = "") String motto, @RequestParam(name = "email", defaultValue = "") String email) {
+                                  @RequestParam(name = "motto", defaultValue = "") String motto, @RequestParam(name = "email", defaultValue = "") String email) {
 
         //@RequestBody PlayerDTO playerDTO) {
 
@@ -76,10 +77,6 @@ public class PlayerController {
 
         return managePlayerProfile.searchByFields(playerDTO);
     }
-
-
-
-
 
 
 }

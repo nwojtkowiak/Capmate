@@ -96,19 +96,19 @@ public class PlayerDAO {
     }
 
     private boolean checkFirstName(String firstName, PlayerEntity p) {
-        return p.getFirstName().equals(firstName);
+        return p.getFirstName().contains(firstName);
     }
 
     private boolean checkLastName(String lastName, PlayerEntity p) {
-        return p.getLastName().equals(lastName);
+        return p.getLastName().contains(lastName);
     }
 
     private boolean checkEmail(String email, PlayerEntity p) {
-        return p.getEmail().equals(email);
+        return p.getEmail().contains(email);
     }
 
     private boolean checkMotto(String motto, PlayerEntity p) {
-        return p.getMotto().equals(motto);
+        return p.getMotto().contains(motto);
     }
 
 

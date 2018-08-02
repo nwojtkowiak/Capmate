@@ -2,6 +2,7 @@ package com.capgemini.jstk.capmates;
 
 import com.capgemini.jstk.capmates.enums.Level;
 import com.capgemini.jstk.capmates.exception.PlayerNotExist;
+import com.capgemini.jstk.capmates.exception.ResourceNotFoundException;
 import com.capgemini.jstk.capmates.game.repository.GameDAO;
 import com.capgemini.jstk.capmates.game.repository.PlayerGameDAO;
 import com.capgemini.jstk.capmates.game.service.GameDTO;
@@ -241,8 +242,8 @@ public class PlayerServiceTest {
         assertThat(level).isEqualTo(Level.INTERMEDIATE);
     }
 
-    @Test(expected = PlayerNotExist.class)
-    public void shouldThrowPlayerNotExist() throws PlayerNotExist {
+    @Test(expected = ResourceNotFoundException.class)
+    public void shouldThrowPlayerNotExist() throws ResourceNotFoundException {
         //give
         int idPlayer = 6;
 

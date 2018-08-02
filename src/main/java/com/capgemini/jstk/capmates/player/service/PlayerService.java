@@ -2,6 +2,7 @@ package com.capgemini.jstk.capmates.player.service;
 
 import com.capgemini.jstk.capmates.enums.Level;
 import com.capgemini.jstk.capmates.exception.PlayerNotExist;
+import com.capgemini.jstk.capmates.exception.ResourceNotFoundException;
 import com.capgemini.jstk.capmates.game.repository.GameEntity;
 import com.capgemini.jstk.capmates.game.repository.PlayerGameDAO;
 import com.capgemini.jstk.capmates.game.service.GameDTO;
@@ -43,14 +44,15 @@ public class PlayerService {
      * @return information of player as PlayerDTO
      * @throws PlayerNotExist
      */
-    public PlayerDTO getPlayerInformation(int id) throws PlayerNotExist {
+    public PlayerDTO getPlayerInformation(int id) throws ResourceNotFoundException {
 
-        try {
-            PlayerEntity user = playerDAO.getUserById(id);
+
+        PlayerEntity user = playerDAO.getUserById(id);
+        if (user != null) {
             return mapperPlayer.mapFromDAO(user);
-        } catch (NullPointerException e) {
-            throw new PlayerNotExist();
         }
+        throw new ResourceNotFoundException();
+
 
     }
 
